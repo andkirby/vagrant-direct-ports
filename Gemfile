@@ -5,7 +5,7 @@ group :development do
 end
 
 group :plugins do
-  gem 'vagrant-direct-ports', path: '.'
+  gem 'vagrant-direct-port', path: '.'
 end
 
 gem 'colorize'
