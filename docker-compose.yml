@@ -1,0 +1,12 @@
+version: '2'
+services:
+  ruby:
+    container_name: vagrant-direct-port
+    hostname: vagrant-direct-port
+    image: ruby:2.2.5-slim
+    volumes:
+      - './:/usr/src/project'
+networks:
+  default:
+    external:
+      name: br0
