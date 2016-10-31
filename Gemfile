@@ -1,11 +1,12 @@
 source 'https://rubygems.org'
 
 group :development do
-  gem 'vagrant', git: 'https://github.com/andkirby/vagrant-direct-ports.git'
+  gem 'vagrant', :tag => 'v1.8.6', :git => 'https://github.com/mitchellh/vagrant.git'
 end
 
 group :plugins do
-  gem 'colorize'
-  gem 'direct_ports', path: '.'
+  gem 'vagrant-direct-ports', path: '.'
 end
+
+gem 'colorize'
 
