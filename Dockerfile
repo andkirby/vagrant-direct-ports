@@ -12,6 +12,12 @@ RUN curl -Ls https://gist.github.com/andkirby/389f18642fc08d1b0711d17978445f2b/r
 RUN echo >> /root/.bashrc && \
     echo 'alias bsh="nano ~/.bashrc && . ~/.bashrc"' >> /root/.bashrc
 
+# Downgrade bundler
+RUN gem uninstall bundler \
+      --install-dir /usr/local/lib/ruby/gems/2.2.0 && \
+    gem install --version 1.12.5 bundler \
+      --install-dir /usr/local/lib/ruby/gems/2.2.0
+
 ENV GEM_SPEC_CACHE=/usr/src/project/.gems/specs
 ENV GIT_DISCOVERY_ACROSS_FILESYSTEM=true
 WORKDIR /usr/src/project
