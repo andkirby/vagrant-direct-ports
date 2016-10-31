@@ -14,5 +14,5 @@ This plug-in solves this.
 
 Also it can:
 - read YAML configuration for NAT port forwarding;
-- generate this YAML configuration automatically;
+- generate this YAML configuration automatically with unique host IP addresses and unique guest ports;
 - update your `etc/hosts` file.
