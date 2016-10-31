@@ -3,9 +3,10 @@ services:
   ruby:
     container_name: vagrant-direct-port
     hostname: vagrant-direct-port
-    image: ruby:2.2.5-slim
+    build: .
     volumes:
       - './:/usr/src/project'
+    command: sleep infinity
 networks:
   default:
     external:
