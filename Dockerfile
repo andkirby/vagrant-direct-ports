@@ -1,10 +1,11 @@
 FROM ruby:2.2.5
 
 RUN apt-get -qq update
+# vim git curl
+RUN apt-get -qq -y install vim git curl
+# nano
 RUN apt-get -qq -y install nano && \
     git clone https://github.com/scopatz/nanorc.git /root/.nano && cat /root/.nano/nanorc >> /root/.nanorc
-
-RUN apt-get -qq -y install vim git curl
 
 RUN curl -Ls https://gist.github.com/andkirby/389f18642fc08d1b0711d17978445f2b/raw/bashrc_ps1_install.sh | bash && \
     curl -Ls https://gist.github.com/andkirby/0e2982bee321aa611bc66385dee5f399/raw/bashrc_init_install.sh | bash
