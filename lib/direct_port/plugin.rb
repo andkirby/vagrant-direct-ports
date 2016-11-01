@@ -1,18 +1,19 @@
 module Vagrant
   module DirectPort
+    ##
+    # Direct port plugin
+    #
     class Plugin < Vagrant.plugin('2')
-      # name 'direct-port'
+      name 'DirectPort'
 
-      description <<-DESC
-          This make direct port forwarding due reason the is not ability to have the same port different IP address.
-          Issue #7905
-      DESC
+      description(
+        'Plugin allows to set port forwarding by YAML configuration file.'
+      )
 
       command 'direct-port' do
         require_relative 'command'
         Command
       end
-
     end
   end
 end
