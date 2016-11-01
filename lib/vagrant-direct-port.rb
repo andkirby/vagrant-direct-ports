@@ -6,5 +6,5 @@ rescue LoadError
   Bundler.require(:default, :development)
 end
 
-require 'vagrant-direct-port/plugin'
-require 'vagrant-direct-port/command'
+require 'direct_port/plugin'
+require 'direct_port/command'
