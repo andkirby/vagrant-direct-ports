@@ -2,19 +2,19 @@
 <!--
 Source:
 https://github.com/andkirby/commithook/blob/master/src/config/examples/pre-commit/Linter-SimplyLint.xml
+
+Please use double minus for options
+$ commithook config -global -xpath validators/Linter-SimplyLint/rb/execution/interpreter_type ruby
+$ commithook config -global -xpath validators/Linter-SimplyLint/rb/execution/linter D:/s/ruby-2.2.5-x64-mingw32/bin/rubocop
+$ commithook config -global -xpath code/interpreter/ruby D:/s/ruby-2.2.5-x64-mingw32/bin/ruby.exe
 -->
 <config>
-  <code>
-    <interpreter>
-      <ruby>ruby</ruby>
-    </interpreter>
-  </code>
   <validators>
     <Linter-SimplyLint>
       <rb>
         <execution>
-          <linter>rubocop</linter>
-          <command>%linter% %file%</command>
+          <interpreter_type>ruby</interpreter_type>
+          <command>%interpreter% %linter% %file%</command>
         </execution>
       </rb>
     </Linter-SimplyLint>
