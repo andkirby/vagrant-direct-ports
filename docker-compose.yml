@@ -1,13 +1,15 @@
 version: '2'
 services:
   ruby:
-    container_name: vagrant-direct-port
-    hostname: vagrant-direct-port
+    container_name: pf
+    hostname: pf.cc
     build: .
+    ports:
+    - '8726:22'
     volumes:
       - './:/usr/src/project'
-      - '/srv/ruby/root:/root'
-    command: sleep infinity
+#      - '/srv/ruby/root:/root'
+#    command: sleep infinity
 networks:
   default:
     external:
