@@ -6,7 +6,10 @@ Gem::Specification.new do |s|
   s.date            = '2016-10-31'
   s.summary         = 'Port forwarding for the same port but different IP address for VirtualBox'
   s.description     = 'Vagrant plugin which could help to make port forwarding for the same port but different IP address for VirtualBox.'
-  s.files           = `git ls-files`.split($\)
+  s.files = Dir['lib/**/*.rb'] + Dir['bin/*']
+  s.files += Dir['lib/*.rb'] + Dir['bin/*']
+  s.files += Dir['[A-Z]*'] + Dir['test/*']
+  s.files.reject! { |fn| fn.include? 'CVS' }
   s.authors         = 'Kirby'
   s.executables     = s.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
   s.require_paths   = ['lib']
