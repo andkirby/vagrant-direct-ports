@@ -54,7 +54,7 @@ RUN gem uninstall bundler \
       --install-dir /usr/local/lib/ruby/gems/2.2.0
 
 RUN echo >> /etc/apt/sources.list && \
-  echo deb http://download.virtualbox.org/virtualbox/debian xenial contrib >> /etc/apt/sources.list && \
+  echo 'deb http://download.virtualbox.org/virtualbox/debian trusty contrib' >> /etc/apt/sources.list && \
   wget -q https://www.virtualbox.org/download/oracle_vbox_2016.asc -O- | apt-key add - && \
   wget -q https://www.virtualbox.org/download/oracle_vbox.asc -O- | apt-key add - && \
   apt-get update && \
