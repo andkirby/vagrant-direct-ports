@@ -84,6 +84,35 @@ module Vagrant
     @@update_hosts = true
 
     ##
+    # Path to directory of Vagrantfile
+    #
+    @@home_dir = nil
+
+    ##
+    # Default ports list
+    #
+    @@default_ports = "80\n443\n22"
+
+    ##
+    # Default ports config
+    #
+    @@default_config = {
+      'vm.localhost':
+        [
+          {
+            host_ip:  '127.0.0.1',
+            guest:    '80',
+            host:     '80',
+          },
+          {
+            host_ip:  '127.0.0.1',
+            guest:    '443',
+            host:     '443',
+          }
+        ]
+    }
+
+    ##
     # Set status of output
     #
     def verbosity=(flag)
@@ -117,6 +146,16 @@ module Vagrant
     #
     def apply_forward_ports=(flag)
       @@apply_forward_ports = flag
+    end
+
+    ##
+    # Set path to dir with configurations
+    #
+    def home_dir(directory)
+      unless Dir.exists?(directory)
+        raise 'Directory "' + directory + '" does not exists.'
+      end
+      @@home_dir = directory
     end
     # endregion
 
@@ -165,9 +204,13 @@ module Vagrant
     # Forward ports by user config file
     #
     def forward_custom_ports(config)
-      update_hosts_file load_config(port_forward_custom_file) if @@update_hosts
-
-      apply_forward_ports_config config, file: port_forward_custom_file
+      if File.exist?(port_forward_custom_file)
+        loaded_config = load_config(port_forward_custom_file)
+      else
+        loaded_config = @@default_config
+      end
+      apply_forward_ports_config config, {ports_config: loaded_config}
+      update_hosts_file loaded_config if @@update_hosts
 
       self
     end
@@ -181,8 +224,13 @@ module Vagrant
       end
 
       file = port_forward_custom_file
-      puts "File #{file}."
-      config = load_config(file)
+      if File.exists?(file)
+        puts "File #{file}."
+        config = load_config(file)
+      else
+        puts 'Loaded default configuration.'.yellow
+        config = @@default_config
+      end
       show_config_forwarding(config)
 
       self
@@ -229,7 +277,9 @@ module Vagrant
     # or pf-config.yml.dist instead
     #
     def port_forward_custom_file
-      path = current_dir
+      path =  current_dir
+
+      return '' if nil === current_dir
 
       path + '/pf-config.yml' +
           (File.exist?(path + '/pf-config.yml') ? '' : '.dist')
@@ -381,14 +431,16 @@ module Vagrant
     ##
     # Forward ports by config file
     #
-    def apply_forward_ports_config(config, file:)
+    def apply_forward_ports_config(config, file: '', ports_config: {})
       return unless @@apply_forward_ports
 
-      file_config = load_config(file)
+      if file && File.exists?(file)
+        ports_config = load_config(file)
+      end
 
-      show_config_forwarding file_config if @@verbosity
+      show_config_forwarding ports_config if @@verbosity
 
-      file_config.each { | group_key, group_net_conf |
+      ports_config.each { | group_key, group_net_conf |
         group_net_conf.each { |net_conf|
           # convert keys to hash keys
           net_conf_hashed = Hash.new
@@ -413,7 +465,7 @@ module Vagrant
     #
     def show_config_forwarding(config)
       config.each { |group_key, group_net_conf|
-        puts "===== #{group_key.green} ====="
+        puts "===== #{group_key.to_s.green} ====="
         group_net_conf.each { |net_conf|
           # convert keys to hash keys
           net_conf_hashed = Hash.new
@@ -457,7 +509,7 @@ module Vagrant
     # Get current directory path
     #
     def current_dir
-      File.dirname(File.expand_path(__FILE__))
+      @@home_dir
     end
 
     ##
