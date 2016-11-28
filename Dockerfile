@@ -45,6 +45,13 @@ RUN gem uninstall bundler \
     gem install --version 1.12.5 bundler \
       --install-dir /usr/local/lib/ruby/gems/2.2.0
 
+RUN echo >> /etc/apt/sources.list && \
+  echo deb http://download.virtualbox.org/virtualbox/debian xenial contrib >> /etc/apt/sources.list && \
+  wget -q https://www.virtualbox.org/download/oracle_vbox_2016.asc -O- | apt-key add - && \
+  wget -q https://www.virtualbox.org/download/oracle_vbox.asc -O- | apt-key add - && \
+  apt-get update && \
+  apt-get install virtualbox-5.1 -y
+
 ENV GEM_SPEC_CACHE=/usr/src/project/.gems/specs
 ENV GIT_DISCOVERY_ACROSS_FILESYSTEM=true
 
