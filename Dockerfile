@@ -32,6 +32,13 @@ RUN touch /var/log/lastlog
 RUN mv /etc/ssh/sshd_config /etc/ssh/sshd_config.bak
 COPY sshd_config /etc/ssh/sshd_config
 
+# Set authorized_keys
+COPY id_rsa.pub /root/
+RUN mkdir -p /root/.ssh && \
+    cat /root/id_rsa.pub >> /root/.ssh/authorized_keys && \
+    rm -f /root/id_rsa.pub && \
+    chmod og-xrw -R /root/.ssh
+
 #ADD supervisord_*.ini /etc/supervisord.d/
 
 # Entrypoint
@@ -40,6 +47,7 @@ CMD /usr/sbin/sshd -D -e
 ####### EOB Enable ssh access #######
 
 # Downgrade bundler
+ENV BUNDLER_VERSION=1.12.5
 RUN gem uninstall bundler \
       --install-dir /usr/local/lib/ruby/gems/2.2.0 && \
     gem install --version 1.12.5 bundler \
