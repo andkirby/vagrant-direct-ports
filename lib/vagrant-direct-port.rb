@@ -8,3 +8,4 @@ end
 
 require 'direct_port/plugin'
 require 'direct_port/command'
+require 'direct_port/direct_port'
